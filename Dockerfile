@@ -7,6 +7,7 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out ./
-EXPOSE 5121
-ENV ASPNETCORE_URLS=http://+:5121
+# Expose the port dynamically using the PORT environment variable
+EXPOSE ${PORT:-5121}
+# Remove the hardcoded ASPNETCORE_URLS since it's set in Program.cs
 ENTRYPOINT ["dotnet", "CodeEditorBackend.dll"]

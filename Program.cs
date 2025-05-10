@@ -20,9 +20,13 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors("AllowAll");
-app.UseHttpsRedirection();
+// Removed UseHttpsRedirection since Render handles HTTPS at the edge
 app.UseAuthorization();
 app.MapControllers();
+
+// Use the PORT environment variable provided by Render, default to 5121 if not set
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5121";
+app.Urls.Add($"http://0.0.0.0:{port}");
 
 app.Run();
 
